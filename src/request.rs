@@ -41,7 +41,7 @@ pub fn extended_header_value(req: &mut Request<Vec<u8>>, name: &'static str, ext
 fn parse_request(buf: &[u8]) -> Result<Option<(Request<Vec<u8>>, usize)>, Error> {
     let mut headers = [httparse::EMPTY_HEADER; MAX_NUM_HEADERS];
     let mut req = httparse::Request::new(&mut headers);
-    let res = req.parse(buf).or_else(|e| Err(Error::MalformedRequest(e)));
+    let res = req.parse(buf).or_else(|e| Err(Error::MalformedRequest(e)))?;
 
     if let httparse::Status::Complete(len) = res {
         let mut request = http::Request::builder()
